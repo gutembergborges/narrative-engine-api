@@ -1,0 +1,33 @@
+# .gitignore: files Git must never track.
+
+# --- Secrets and local configuration ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# --- Virtual environment (created by `uv sync`) ---
+.venv/
+
+# --- Tool caches ---
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- Editors and operating systems ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# --- Claude Code: personal, machine-local settings (shared ones may be committed) ---
+.claude/settings.local.json
