@@ -1,0 +1,55 @@
+# pyproject.toml: the single configuration file of this Python project.
+# Think of it as composer.json: metadata, dependencies and tool settings.
+# Docs: https://docs.astral.sh/uv/concepts/projects/config/
+
+[project]
+name = "narrative-engine-api"
+version = "0.1.0"
+description = "Narrative/RPG engine API: character sheets, world state, inventory and LLM-generated narrative."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+# 3.14 is a year old and well supported by every library we use.
+# 3.15.0 came out in October 2026; we wait for it to mature.
+requires-python = ">=3.14"
+dependencies = [
+    # FastAPI is still 0.x, so a MINOR bump may break things. The official advice is
+    # to pin the minor version and upgrade on purpose:
+    # https://fastapi.tiangolo.com/deployment/versions/
+    # The "standard" extra adds the `fastapi` CLI and the Uvicorn server.
+    "fastapi[standard]>=0.163.0,<0.164.0",
+]
+
+# Development-only tools. `uv sync` installs them; a production image would skip them
+# with `uv sync --no-dev`. Same idea as "require-dev" in Composer.
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",   # test runner
+    "httpx>=0.28.1",   # HTTP client used by FastAPI's TestClient
+    "ruff>=0.17.5",    # linter + formatter (replaces flake8, isort and black)
+]
+
+# The build system turns `src/narrative_engine` into an installable package, so
+# `import narrative_engine` works in tests and in the server without path tricks.
+# Same role as the PSR-4 autoload mapping in Composer.
+[build-system]
+requires = ["uv_build>=0.13.8,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+# The project is called "narrative-engine-api", but the importable package is
+# `narrative_engine` (it lives in src/narrative_engine).
+module-name = "narrative_engine"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# -ra: at the end, print a short reason for every test that did not pass.
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+# E/F: basic errors · I: import order · B: likely bugs · UP: modern syntax · SIM: simplifications
+select = ["E", "F", "I", "B", "UP", "SIM"]
