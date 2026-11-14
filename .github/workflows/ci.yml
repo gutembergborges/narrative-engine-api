@@ -35,7 +35,7 @@ jobs:
           enable-cache: true
 
       # Create the virtual environment and install the project plus the dev tools.
-      # After uv.lock is committed (Milestone 1, issue 2) this becomes `uv sync --locked`,
+      # After uv.lock is committed (issue #2), issue #3 changes this to `uv sync --locked`,
       # which fails when the lockfile and pyproject.toml disagree.
       - name: Install dependencies
         run: uv sync
